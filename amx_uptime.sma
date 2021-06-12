@@ -123,6 +123,10 @@ public print_uptime_console_raw() {
  * @return int
  */
 public print_uptime_player(player_id) {
+	if (!is_user_admin(player_id)) {
+		return PLUGIN_CONTINUE;
+	}
+
 	build_uptime();
 
 	client_print(player_id, print_console, "Uptime: %s", ts_str);
@@ -143,4 +147,5 @@ public plugin_init() {
 	register_srvcmd("amx_uptime", "print_uptime_console", ADMIN_RCON, "- posts the server uptime to the internal console");
 	register_srvcmd("amx_uptime_raw", "print_uptime_console_raw", ADMIN_RCON, "- posts the server uptime to the internal console as a raw epoch timestamp");
 	register_clcmd("amx_uptime", "print_uptime_player", ADMIN_ALL, "- reports the server uptime to the player console", FLAG_MANAGER_OPT_IN);
+	register_clcmd("say /uptime", "print_uptime_player", ADMIN_ALL, "- reports the server uptime to the player console", FLAG_MANAGER_OPT_IN);
 }
