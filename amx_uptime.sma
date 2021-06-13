@@ -9,7 +9,6 @@
  * Global TODOs:
  *
  * - Hope it doesn't break.
- * - Handle more than 99 years uptime (nvm, I actually did it).
  */
 
 const FLAG_MANAGER_OPT_IN = 1;
