@@ -9,7 +9,7 @@
  * Global TODOs:
  *
  * - Hope it doesn't break.
- * - Handle more than 99 years uptime (no, I won't do it, this is just a joke, don't even try).
+ * - Handle more than 99 years uptime (nvm, I actually did it).
  */
 
 const FLAG_MANAGER_OPT_IN = 1;
@@ -22,7 +22,10 @@ const SECONDS_IN_WEEK  	= SECONDS_IN_DAY    * 7;   // 604800  	=> 1 week   = 7 d
 const SECONDS_IN_MONTH 	= SECONDS_IN_WEEK   * 4;   // 2419200	=> 1 month  = 4 weeks
 const SECONDS_IN_YEAR  	= SECONDS_IN_MONTH  * 12;  // 29030400	=> 1 year   = 12 months
 
-new cvar_server_start_time, time_spent, ts_str[512], aux_str[128];
+// Sometimes, the clock counting might start a bit off, we don't want to count that as an overflow.
+const INVALID_INTEGER_OFFSET = -3600;
+
+new cvar_server_start_time, time_spent, ts_str[512], aux_str[128], do_subtraction = true;
 
 /*
  * This function builds a pair of time information in the following format:
@@ -33,7 +36,7 @@ new cvar_server_start_time, time_spent, ts_str[512], aux_str[128];
  * 1 second
  * 5 seconds
  *
- * This result is, then, concatenated to "ts_str". "time_spent" gets substracted the amount of
+ * This result is, then, concatenated to "ts_str". "time_spent" gets subtracted the amount of
  * "mutliplier hits" by the passed "multiplier" so that we're left with the remaining time, which
  * is what's still left to process.
  *
@@ -76,9 +79,27 @@ public process_time(multiplier, label[32]) {
  * @return void
  */
 build_uptime(do_parsing = true) {
-	time_spent = get_systime() - get_pcvar_num(cvar_server_start_time);
+	if (do_subtraction) {
+		time_spent = get_systime() - get_pcvar_num(cvar_server_start_time);
+	}
 
-	if (do_parsing) {
+	/*
+	 * This is because at this point the integer would overflow to a negative value.
+	 *
+	 * For more information, please refer to the following page:
+	 * https://docs.microsoft.com/en-us/cpp/c-language/cpp-integer-limits?view=msvc-160
+	 *
+	 * Pay close attention to the section that talks about INT_MAX.
+	 */
+	if (time_spent <= INVALID_INTEGER_OFFSET) {
+		ts_str = "more than 68 years.";
+
+		/*
+		 * We'll stop trying to do the subtraction, it's a waste of resources and it might
+		 * overflow into a positive number after 68 years pass again.
+		 */
+		do_subtraction = false;
+	} else if (do_parsing) {
 		ts_str = "";
 
 		process_time(SECONDS_IN_YEAR,	"year");
