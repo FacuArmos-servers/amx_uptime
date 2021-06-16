@@ -16,7 +16,9 @@ This plugin lets you keep track of your server's uptime by saving the start time
 
 *Resetting the uptime as an administrator with the "`l`" flag (`ADMIN_RCON`) from the client*
 [![https://i.ibb.co/BtLGgwR/image.png](https://i.ibb.co/BtLGgwR/image.png)](https://imgbb.com/)
+
 [![https://i.ibb.co/89SFMZc/image.png](https://i.ibb.co/89SFMZc/image.png)](https://imgbb.com/)
+
 [![https://i.ibb.co/5xnTThn/image.png](https://i.ibb.co/5xnTThn/image.png)](https://imgbb.com/)
 
 ## Dependencies
