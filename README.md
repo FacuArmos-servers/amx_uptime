@@ -45,7 +45,7 @@ This plugin lets you keep track of your server's uptime by saving the start time
 ## CVARs
 
 - `server_start_time` - keeps track of the server start timestamp which is used to calculate the uptime upon request, this CVAR is protected from client-side changes and shouldn't be manipulated manually.
-- `reset_uptime_enable` - an administrator of the server console or an administrator with a client whose flags allow it to use the `amx_rcon` command **must** set this CVAR to "`true`" in order to authorize itself or any other administrator to execute any of the variants of the uptime reset commands. Once the uptime is reset, this CVAR will get back to "`false`".
+- `reset_uptime_enable` - an administrator of the server console or an administrator with a client whose flags allow it to use the `amx_rcon` command **must** set this CVAR to `true` in order to authorize itself or any other administrator to execute any of the variants of the uptime reset commands. Once the uptime is reset, this CVAR will get back to `false`.
 
 ## Installation
 
